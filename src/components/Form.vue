@@ -11,12 +11,14 @@
             <ul class="navbar-nav ms-auto py-4 py-lg-0">
                 <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="#">Home</a></li>
                 <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="about.html"></a></li>
-                <li class="nav-item"><router-link class="nav-link py-3 py-lg-4" to="/login" >Logout</router-link></li>
+                <li class="nav-item"><router-link class="nav-link py-3 py-lg-4" to="/login" >Form</router-link></li>
 
             </ul>
         </div>
     </div>
  </nav>
+ <!--  -->
+  
   <MDBContainer>
        <div class="row justify-content-center mx-auto" style="margin-top:150px">
           <div class="col-md-10">
@@ -31,70 +33,142 @@
                         Staff Employment form 
                       </div>
                   </div>
-                  <div class="row justify-content-center p-4">
-                    <div class="col-md-6 mb-3">
-                        <MDBInput label="Firstname" size="lg" />
+                  <!-- <form > -->
+                    <div class="row justify-content-center p-4">
+                      <div class="col-md-6 mb-3">
+                          <MDBInput label="Firstname" size="lg" v-model="firstname" />
+                      </div>
+                      <div class="col-md-6 mb-4">
+                          <MDBInput label="Lastname " size="lg" v-model="lastname"/>
+                      </div>
+                      <div class="col-md-12 mb-3">
+                          <MDBInput label="Email" size="lg"  v-model="email"/>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <MDBInput label="Phone" size="lg" v-model="phone" />
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <MDBInput label="LGA" size="lg" v-model="local" />
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <MDBInput label="Country" size="lg" v-model="country" />
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <MDBInput label="State" size="lg" v-model="state"/>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <MDBInput label="Role" size="lg" v-model="role" />
+                      </div>
+                      <div class="col-md-6 mb-4">
+                          <MDBInput label="Location " size="lg"  v-model="location" />
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <MDBInput label="date" size="lg" type="date" v-model="date"/>
+                      </div>
+                      <div class="col-md-6 mb-4">
+                          <MDBInput label="Position " size="lg"  v-model="position" />
+                      </div>
+                      <div class="col-md-12">
+                        <MDBBtn @click="onSubmitform" type="submit" color="primary"> <span v-show="title">Submit Form</span> 
+                          <div class="text-center" v-show="spinner">
+                            <MDBSpinner />
+                          </div>
+                        </MDBBtn>
+                      </div>
                     </div>
-                    <div class="col-md-6 mb-4">
-                        <MDBInput label="Lastname " size="lg" />
-                    </div>
-                    <div class="col-md-12 mb-3">
-                        <MDBInput label="Email" size="lg" />
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <MDBInput label="Phone" size="lg" />
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <MDBInput label="LGA" size="lg" />
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <MDBInput label="Country" size="lg" />
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <MDBInput label="State" size="lg" />
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <MDBInput label="Role" size="lg" />
-                    </div>
-                    <div class="col-md-6 mb-4">
-                        <MDBInput label="Location " size="lg"  v-model="count" />
-                    </div>
-                    <div class="col-md-12">
-                       <MDBBtn color="primary">Submit Form</MDBBtn>
-                    </div>
-                  </div>
+
+                  <!-- </form> -->
                 </MDBCardText>
               </MDBCardBody>
             </MDBCard>
           </div>
        </div>
+       <!--  -->
+      
+      
   </MDBContainer>
   </div>
 </template>
 
 <script>
-import { MDBContainer, MDBInput,MDBCard,MDBBtn } from "mdb-vue-ui-kit";
-
+import { MDBContainer, MDBInput,MDBCard,MDBBtn,MDBSpinner } from "mdb-vue-ui-kit";
+import Axios from 'axios'
+import API from './environment'
+// import {ref} from 'vue'
 export default {
   name: "HelloWorld",
   data(){
     return{
-      count:'8'
+      count:'',
+      firstname:'',
+      lastname:'',
+      email:'',
+      phone:'',
+      local:'',
+      country:'',
+      state:'',
+      role:'',
+      location:'',
+      date:'',
+      position:'',
+      show1 : true,
+      show2:false,
+      spinner:false,
+      title:true
     }
+  },
+  setup() {
+    //  let exampleFrameModal =   this.exampleFrameModal1 = ref(false);
+    //   return{
+    //       exampleFrameModal
+    //   }
   },
   components: {
     MDBContainer,
     MDBInput,
     MDBCard,
-    MDBBtn 
+    MDBBtn,
+    MDBSpinner 
+   
   },
   created(){
-    // setInterval(() => {
-    //     this.count --;
-    //     if(this.count <=0){
-    //       this.count = 0
-    //     }
-    // }, 1000);
+    this.count = API.http
+  },
+  methods:{
+    onSubmitform:function(){
+      this.spinner = true
+      this.title = false
+       this.show2 = true
+        let {
+           firstname,
+            lastname,
+            email,
+            phone,
+            local,
+            country,
+            state,
+            role,
+            location,
+            date,
+            position
+        } = this
+        let form_data =  {firstname, lastname, email, phone, local, country, state, role, location, date, position}
+        let URL = API.http
+        console.log(URL)
+        Axios.post(`${URL}auth/register`, form_data).then(res=>{
+          console.log(res)
+          if(res.status == 200){
+            
+             setTimeout(() => {
+               this.spinner = false
+              this.spinner == false ? this.$router.push('/home') : this.spinner == true 
+             }, 2000);
+                
+          }
+        }).catch(err=>{
+          console.log(err)
+        })
+    }
   },
   props: {
     msg: String

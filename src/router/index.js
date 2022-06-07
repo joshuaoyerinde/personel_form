@@ -2,28 +2,29 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Form from '../components/Form.vue'
 import Login from '../components/admin/Login.vue'
+import Dash from '../components/admin/Dash.vue'
+import UserUpdate from '../components/admin/Profile.vue'
 
 const routes = [
+  {
+    redirect:'/form',
+    path:'/'
+  },
   {
     path: '/home',
     name: 'Home',
     component: Home
   },
-  {
-    redirect:'/form',
-    path:'/'
-  },
-
+  
   {
     path:'/form',
     name:'form',
     component:Form
   },
   // routing from admi
-  {
-    path:'/admin/login',
-    component:Login
-  },
+  { path:'/admin/login', component:Login },
+  {path:'/dash', component:Dash, name:'dash'},
+  {path:'/admin/user_profile/:id', component:UserUpdate, name:'user_profile'},
   {
     path: '/about',
     name: 'About',
