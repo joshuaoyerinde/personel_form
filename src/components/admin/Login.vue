@@ -35,6 +35,8 @@
 
 <script>
 import { MDBContainer, MDBCard,MDBBtn, MDBInput} from "mdb-vue-ui-kit";
+import API from '../environment'
+import axios from 'axios';
 export default {
     data(){
         return{
@@ -51,7 +53,15 @@ export default {
     methods:{
         onLogin(){
            let {username, password} = this
-            console.log({username, password} )
+          let base_url = API.http
+          axios.post(`${base_url}/admin_login`,{username, password}).then(res=>{
+              console.log(res)
+              if(res.status == 200){
+                  this.$router.push('/dash')
+              }
+          }).catch(err=>{
+              console.log(err)
+          })
         }
     }
 }

@@ -63,7 +63,7 @@
                           <MDBInput label="Location " size="lg"  v-model="location" />
                       </div>
                       <div class="col-md-6 mb-3">
-                          <MDBInput label="date" size="lg" type="date" v-model="date"/>
+                          <MDBInput label="dateOfBirth" size="lg" type="date" v-model="date"/>
                       </div>
                       <div class="col-md-6 mb-4">
                           <MDBInput label="Position " size="lg"  v-model="position" />

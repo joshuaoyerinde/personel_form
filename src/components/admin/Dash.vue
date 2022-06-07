@@ -18,7 +18,7 @@
  </nav>
     <div class="container" style="margin-top:150px">
         <div class="row">
-            <div class="col-md-4 mb-3">
+            <div class="col-md-6 mb-3">
                 <MDBCard>
                     <MDBCardBody class="p-3">
                         <MDMCardText class="">
@@ -33,13 +33,13 @@
                     </MDBCardBody>
                 </MDBCard>
             </div>
-            <div class="col-md-4 mb-3">
+            <div class="col-md-6 mb-3">
                 <MDBCard>
                     <MDBCardBody class="p-3">
                         <MDMCardText class="">
                             <div>
                                 No of Onboarding
-                                <h5>200</h5>
+                                <h5>0</h5>
                             </div>
                             <div class="clear-fix">
                                 <div class="float-end"><i class="fa fa-user"></i></div>
@@ -48,7 +48,7 @@
                     </MDBCardBody>
                 </MDBCard>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-0 d-none">
                 <MDBCard>
                     <MDBCardBody class="p-3">
                         <MDBCardText class="">
@@ -65,9 +65,22 @@
             </div>
         </div>
         <!--  -->
-        <div class="clearfix">
-            <div class="float-end">
-                <input type="text">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="clearfix">
+                    <div class="float-end">
+                        <MDBInput
+                        type="text"
+                        id="form1"
+                        class="form-icon-trailing"
+                        label="search"
+                        v-model="findname"
+                        >
+                        <i class="fas fa-search trailing"></i>
+                        
+                    </MDBInput>
+                    </div>
+                </div>
             </div>
         </div>
         <MDBTable class="align-middle mb-0 bg-white mt-5">
@@ -84,7 +97,7 @@
             <tbody>
          
             <!--  -->
-                <tr v-for="(p,i) in personnels" :key="i">
+                <tr v-for="(p,i) in filterednames" :key="i">
                     <td>
                     <div class="d-flex align-items-center">
                         <img src="https://mdbootstrap.com/img/new/avatars/7.jpg" class="rounded-circle" alt=""
@@ -96,11 +109,11 @@
                     </div>
                     </td>
                     <td>
-                        <p class="fw-normal mb-1">{{p.role}}</p>
+                        <p class="fw-normal mb-1">{{p.department}}</p>
                         <p class="text-muted mb-0">{{p.position}}</p>
                     </td>
                     <td>
-                        <MDBBadge badge="warning" pill class="d-inline">Awaiting</MDBBadge>
+                        <MDBBadge :badge="p.status=='awaiting'? 'warning' : 'success'" pill class="d-inline">{{p.status}}</MDBBadge>
                     </td>
                     <td>{{p.position}}</td>
 
@@ -251,9 +264,8 @@ export default {
     computed:{
          filterednames(){
             let filter = new RegExp (this.findname, 'i');
-            console.log(this.getProduct);
             if(this.personnels){
-                return this.personnels.filter(f => f.firstname.match(filter) || f.lastname.match(filter));
+                return this.personnels.filter(f => f.firstname.match(filter) || f.department.match(filter));
             }else{
                 return null;
             }
@@ -283,6 +295,9 @@ export default {
             let URL = API.http
             Axios.patch(`${URL}admin/update`, form_update).then(res=> {
                 console.log(res)
+                if(res.status == 200){
+                    alert(res.data.message)
+                }
             }).catch(err=>{
                 console.log(err)
             })
@@ -321,7 +336,7 @@ export default {
            this.exampleModalScrollable = true
 
         },
-
+        //to view personnels info
         viewStaff(id){
             this.$router.push('/admin/user_profile/' + id);
         }
