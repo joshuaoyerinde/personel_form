@@ -39,7 +39,7 @@
                         <MDMCardText class="">
                             <div>
                                 No of Onboarding
-                                <h5>0</h5>
+                                <h5>{{totalOfawaiting }}</h5>
                             </div>
                             <div class="clear-fix">
                                 <div class="float-end"><i class="fa fa-user"></i></div>
@@ -54,7 +54,7 @@
                         <MDBCardText class="">
                             <div>
                                 Active
-                                <h5>200</h5>
+                                <h5>20</h5>
                             </div>
                             <div class="clear-fix">
                                 <div class="float-end"><i class="fa fa-user"></i></div>
@@ -142,15 +142,18 @@
             size="lg"
         >
             <MDBModalHeader>
-            <MDBModalTitle id="exampleModalScrollableTitle"> Modal title </MDBModalTitle>
+            <MDBModalTitle id="exampleModalScrollableTitle"> Admin </MDBModalTitle>
             </MDBModalHeader>
             <MDBModalBody > 
                <!-- form update -->
+               <div class="text-center" v-show="error_">
+                   <h1>network error</h1>
+               </div>
                 <div class="text-center">
                       <img src="https://mdbootstrap.com/img/new/avatars/8.jpg" alt="" style="width: 45px; height: 45px"
                       class="rounded-circle" /> <br>
                       <div class="text-head" >
-                        Staff Employment form 
+                        Staff Employment Deatails
                       </div>
                   </div>
                   <div class="row justify-content-center p-4">
@@ -223,6 +226,7 @@ import {
 // import { ref } from 'vue'
 import API from '../environment'
 import  Axios  from 'axios';
+import axios from 'axios';
 
 export default {
     data(){
@@ -244,7 +248,9 @@ export default {
             exampleModalScrollable: false,
             id:'',
             totalOfEmployee:"",
-            findname:''
+            totalOfawaiting:'',
+            findname:'',
+            error_:false
         }
     },
     components:{
@@ -265,7 +271,7 @@ export default {
          filterednames(){
             let filter = new RegExp (this.findname, 'i');
             if(this.personnels){
-                return this.personnels.filter(f => f.firstname.match(filter) || f.department.match(filter));
+                return this.personnels.filter(f => f.firstname.match(filter) || f.department.match(filter) || f.role.match(filter));
             }else{
                 return null;
             }
@@ -312,7 +318,7 @@ export default {
             }).catch(err =>{
                 console.log(err.code)
                 if(err.code == 'ERR_NETWORK'){
-                    alert('network error')
+                    this.error_ = true
                 }
             })
         },
@@ -343,6 +349,10 @@ export default {
     },
     mounted(){
         this.getDetails();
+        let base_url = API.http
+        axios.get(`${base_url}total_status`).then(res=>{
+            this.totalOfawaiting = res.data.response.length
+        })
     }
 }
 </script>

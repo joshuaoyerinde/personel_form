@@ -21,7 +21,12 @@
                                         <MDBInput label="Password" size="lg" type="password" v-model="password" />
                                     </div>
                                     <div class="col-md-8 mb-3">
-                                       <MDBBtn color="primary" type="submit">Login</MDBBtn>
+                                       <MDBBtn color="primary" type="submit">
+                                          <span  v-show="title"> Login</span>
+                                         <div class="text-center" v-show="spinner">
+                                            <MDBSpinner />
+                                        </div>
+                                       </MDBBtn>
                                     </div>
                                 </div>
                             </form>
@@ -34,30 +39,38 @@
 </template>
 
 <script>
-import { MDBContainer, MDBCard,MDBBtn, MDBInput} from "mdb-vue-ui-kit";
+import { MDBContainer, MDBCard,MDBBtn, MDBInput,MDBSpinner} from "mdb-vue-ui-kit";
 import API from '../environment'
 import axios from 'axios';
 export default {
     data(){
         return{
             password:'',
-            username:''
+            username:'',
+            title:true,
+            spinner:false
         }
     },
     components:{
         MDBContainer, 
         MDBInput,
         MDBCard,
-        MDBBtn 
+        MDBBtn,
+        MDBSpinner
     },
     methods:{
         onLogin(){
+            this.spinner = true
+            this.title = false
            let {username, password} = this
           let base_url = API.http
           axios.post(`${base_url}/admin_login`,{username, password}).then(res=>{
               console.log(res)
               if(res.status == 200){
-                  this.$router.push('/dash')
+                   setTimeout(() => {
+                        this.spinner = false
+                        this.spinner == false ? this.$router.push('/dash') : this.spinner == true 
+                    }, 2000);
               }
           }).catch(err=>{
               console.log(err)

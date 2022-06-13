@@ -1,4 +1,4 @@
 
 export default {
-    http:'http://localhost:5000/api/'
+    http:'https://personnel-saki.herokuapp.com/api/'
 }
